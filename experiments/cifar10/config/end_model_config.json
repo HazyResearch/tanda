@@ -1,0 +1,23 @@
+{
+    "name" : "end_model_config",
+    "parameters" : {
+        "validation_set": [true],
+        "transformer": ["image-pct"],
+        "p_transform_init": [1.0],
+        "p_transform_max": [1.0],
+        "p_transform_drop": [140],
+        "end_epochs" : [150],
+        "end_per_img_std" : [true],
+        "n_per_class" : [400],
+        "end_weight_decay" : [0.0002],
+        "end_optimizer" : ["momentum"],
+        "end_lr_mode" : ["schedule"],
+        "end_lr_schedule": [0],
+        "eval_every": [10],
+        "seq_len": [10],
+        "ls_term": [0.1, 0.5],
+        "ls_term_n_passes": [1, 3],
+        "end_batch_size": [50],
+        "end_batch_size_u": [10]
+    }
+}

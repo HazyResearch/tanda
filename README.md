@@ -1,2 +1,138 @@
-# tanda
-Learning to Compose Domain-Specific Transformations for Data Augmentation
+# Learning to Compose Domain-Specific Transformations for Data Augmentation
+### *Or: Transformation Adversarial Networks for Data Augmentations (TANDA)*
+
+#### Corresponding authors: [Alex Ratner](https://github.com/ajratner) (ajratner@cs.stanford.edu), [Henry Ehrenberg](https://github.com/henryre) (henryre@cs.stanford.edu)
+
+#### Hazy Research: [GitHub](https://github.com/HazyResearch), [research homepage](https://snorkel.stanford.edu)
+
+## Overview
+
+Using data augmentation on benchmark machine learning tasks, like MNIST and
+CIFAR-10, yields large performance gains.
+But using data augmentation on new tasks can prove difficult.
+We've found that while it's usually easy for practitioners to
+
+* obtain large quantities of labeled data; and
+* come up with individual label-preserving data transformations (e.g. small image rotations),
+
+constructing and tuning the more sophisticated compositions typically needed to
+achieve state-of-the-art results is a time-consuming manual task.
+The TANDA library unlabeled data points and arbitrary, user-provided
+transformation functions as input, and learns how to compose them to generate
+*realistic*, augmented data points.
+
+
+### Paper
+
+*arXiv link*
+
+
+### Visual examples
+
+#### Synthetic data
+
+The original data points (blue) are distributed at random within the purple
+dotted line. We define several random displacement vectors as transformations,
+and the orange points are augmented copies of blue data points.
+At first, the transformations are applied effectively at random, yielding many
+augmented points outside of the true data distribution.
+After a few iterations, the augmentation model learns how to create sequences
+of displacements that yield augmented data points within the distribution of
+interest.
+
+![TANDA](figures/tanda.gif)
+
+#### MNIST
+
+We learned an augmentation model for the MNIST data set using rotation, shear,
+elastic deformation, and rescaling transformation functions.
+The figure shows 100 augmented MNIST images.
+While they initially do not look like realistic digits, the model learns to 
+compose the image transformations to generate realistic augmented images.
+
+![TANDA-MNIST](figures/mnist.gif)
+
+## Installation
+
+First, clone this repo. TANDA uses Python 2.7 and requires
+[a few python packages](python-package-requirement.txt) which can be installed
+using `pip` (or [`conda`](https://www.continuum.io/downloads)).
+
+```bash
+pip install --requirement python-package-requirement.txt
+```
+
+## Example usage
+
+TANDA includes example TAN training scripts for MNIST and CIFAR-10. You'll need
+to add the TANDA library to your path first. From the top-level `tanda`
+directory, just run
+
+```bash
+source set_env.sh
+```
+
+The example scripts can be found in `example-scripts`. To train an MNIST TAN:
+
+```bash
+example-scripts/mnist-example.sh
+```
+
+Before running experiments with CIFAR-10, you'll need to download the data:
+
+```bash
+cd experiments/cifar10
+./download-data.sh
+cd $TANDAHOME
+```
+
+Then to train a CIFAR-10 TAN, run:
+
+```bash
+example-scripts/cifar-example.sh
+```
+
+## Running experiments with custom parameters
+
+### Single experiment
+To run a single experiment, for example on CIFAR-10:
+```bash
+source set_env.sh
+python experiments/cifar10/train.py --run_name test_run [FLAGS]
+```
+
+The vast majority of flags can be found in `experiments/train_scripts.py`, but
+individual train scripts (e.g. `experiments/cifar10/train.py`) may also have
+custom flags.
+
+The `run_type` flag determines the mode to run in:
+* `tanda-full` [default]: Train a TAN, then use this to train a data-augmented end model
+* `tan-only`: Train TAN only
+* `tanda-pretrained`: Load trained TAN, then use this to train a data-augmented end model
+* `random`: Train a randomly-augmented end model
+* `baseline`: Train an end model with no data augmentation
+
+TensorBoard visualizations are available during (and after) training:
+
+```bash
+tensorboard --logdir experiments/log/[DATESTAMP]/[RUN_NAME]_[TIMESTAMP]
+```
+
+### Multiple experiments
+To launch a set of experiments in parallel, first define a config file (see `experiments/cifar10/config/` for examples), then run e.g.:
+```bash
+source set_env.sh
+python experiments/launch_run.py --script experiments/cifar10/train.py --config experiments/cifar10/config/tan_search_config.json
+```
+
+To see quick stats from the TAN training, run:
+```bash
+python experiments/print_tan_stats.py --log_root [LOG_ROOT]
+```
+
+One procedure is to train a set of TAN models (setting `tan_only=True`), then
+choose the best ones (by e.g. visual appearance or generative-to-random
+loss ratio), then run these with end models.  This can be done in parallel:
+```bash
+python experiments/launch_end_models.py --script experiments/cifar10/train.py --end_model_config experiments/cifar10/config/end_model_config.json --tan_log_root [LOG_ROOT] --model_indexes 1 5 7
+```

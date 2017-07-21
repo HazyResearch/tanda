@@ -1,0 +1,5 @@
+export TANDAHOME="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+echo "TANDA home directory: $TANDAHOME"
+export PYTHONPATH="$PYTHONPATH:$TANDAHOME"
+export PATH="$PATH:$TANDAHOME"
+echo "Environment variables set!"

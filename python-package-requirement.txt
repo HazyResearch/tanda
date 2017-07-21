@@ -1,0 +1,8 @@
+matplotlib
+numpy>=1.11
+pandas
+pillow
+scikit-image>=0.13
+scipy>=0.18
+six
+tensorflow>=1.2

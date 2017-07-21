@@ -1,0 +1,30 @@
+{
+    "name" : "tan_search_config",
+    "parameters" : {
+        "generator" : [
+            {
+                "model" : "lstm",
+                "config" : {
+                    "n_stack": 1,
+                    "feed_actions": true,
+                    "init_type": "train",
+                    "logit_range": 6.0
+                }
+            }
+        ],
+        "gamma" : [0.5],
+        "n_epochs" : [1],
+        "n_gen_steps" : [1],
+        "n_sample" : [5],
+        "gen_lr" : [0.0003, 0.001, 0.003],
+        "disc_lr" : [1e-5, 5e-5],
+        "mse_term" : [0.001, 0.0025, 0.005],
+        "mse_layer": [1],
+        "per_img_std": [false],
+        "seq_len" : [10],
+        "batch_size": [32],
+        "run_type": ["tan-only"],
+        "transformer": ["image"],
+        "validation_set": [false]
+    }
+}
