@@ -1,7 +1,9 @@
 # Learning to Compose Domain-Specific Transformations for Data Augmentation
 ### *Or: Transformation Adversarial Networks for Data Augmentations (TANDA)*
 
-#### Corresponding authors: [Alex Ratner](https://github.com/ajratner) (ajratner@cs.stanford.edu), [Henry Ehrenberg](https://github.com/henryre) (henryre@cs.stanford.edu)
+#### Corresponding authors: [Alex Ratner](https://ajratner.github.io) (ajratner@cs.stanford.edu), [Henry Ehrenberg](https://github.com/henryre) (henryre@cs.stanford.edu)
+
+#### [TANDA blog post](https://hazyresearch.github.io/snorkel/blog/tanda.html)
 
 #### Hazy Research: [GitHub](https://github.com/HazyResearch), [research homepage](https://snorkel.stanford.edu)
 
@@ -20,12 +22,6 @@ achieve state-of-the-art results is a time-consuming manual task.
 The TANDA library unlabeled data points and arbitrary, user-provided
 transformation functions as input, and learns how to compose them to generate
 *realistic*, augmented data points.
-
-
-### Paper
-
-*arXiv link*
-
 
 ### Visual examples
 
