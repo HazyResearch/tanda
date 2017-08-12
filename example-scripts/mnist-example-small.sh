@@ -1,5 +1,5 @@
 #!/bin/bash
-
+source set_env.sh
 python experiments/mnist/train.py \
 	--run_type tan-only \
 	--generator mean_field \
