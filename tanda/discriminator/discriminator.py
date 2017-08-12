@@ -115,8 +115,9 @@ class Discriminator(object):
             # Pass through the network
             # NOTE: Any random ops e.g. dropout, etc. should be used here in
             # train mode!
-            # NOTE: We use prediction vectors not logits now
-            pred_u_t_arr = tf.TensorArray(tf.float32, Np)
+            # NOTE: We regularize logits (not prediction vector); this works
+            # much better empirically
+            logits_u_t_arr = tf.TensorArray(tf.float32, Np)
             with tf.variable_scope(name, reuse=True):
                 
                 # Add several transformed versions' logits
@@ -128,11 +129,10 @@ class Discriminator(object):
                                     train=True,
                                     reuse=True
                                 )
-                    pred_u_t = tf.nn.softmax(logits_u_t)
-                    pred_u_t_arr = pred_u_t_arr.write(i, pred_u_t)
+                    logits_u_t_arr = logits_u_t_arr.write(i, logits_u_t)
             
             # Add TR reg term to loss
-            u_reg_loss = self._tr_term(pred_u_t_arr, Np)
+            u_reg_loss = self._tr_term(logits_u_t_arr, Np)
             summaries.append(tf.summary.scalar("U_loss", u_reg_loss))
             self.loss += ls_term * u_reg_loss
 

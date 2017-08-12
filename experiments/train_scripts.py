@@ -98,7 +98,7 @@ flags.DEFINE_integer("n_disc_steps", 1, "Number of steps to take w disc. model")
 # End model params
 flags.DEFINE_string("end_discriminator", "resnet", "End discriminator class")
 flags.DEFINE_integer("end_epochs", 100, "Number of training epochs")
-flags.DEFINE_integer("end_batch_size", 100, "Batch size to use for end model")
+flags.DEFINE_integer("end_batch_size", 50, "Batch size to use for end model")
 flags.DEFINE_boolean("end_per_img_std", True, "Apply per-image standardization")
 flags.DEFINE_integer("n_per_class", 500,
     "Number of data pts. per class for end model")
@@ -125,9 +125,9 @@ flags.DEFINE_string("end_optimizer", "momentum", "End optimizer")
 flags.DEFINE_integer("save_end_model_every", 50,
     "Epoch frequency at which to save end model checkpoints")
 # Whether to use unlabeled data local smoothness reg. term
-flags.DEFINE_float("ls_term", 0.0, "Unlabeled data local smoothness term")
-flags.DEFINE_integer("ls_term_n_passes", 5, "N passes per data point")
-flags.DEFINE_integer("end_batch_size_u", 100,
+flags.DEFINE_float("ls_term", 0.1, "Unlabeled data local smoothness term")
+flags.DEFINE_integer("ls_term_n_passes", 1, "N passes per data point")
+flags.DEFINE_integer("end_batch_size_u", 10,
     "Batch size for unlabeled data for LS reg term")
 
 # Training fold params

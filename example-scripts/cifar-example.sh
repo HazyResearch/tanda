@@ -1,5 +1,5 @@
 #!/bin/bash
-
+source set_env.sh
 python experiments/cifar10/train.py \
 	--run_type tan-only \
 	--generator gru \
