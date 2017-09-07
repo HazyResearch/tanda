@@ -5,6 +5,8 @@
 
 #### [TANDA blog post](https://hazyresearch.github.io/snorkel/blog/tanda.html)
 
+#### Paper (to appear at NIPS 2017): [Learning to Compose Domain-Specific Transformations for Data Augmentation](https://arxiv.org/abs/1709.01643) 
+
 #### Hazy Research: [GitHub](https://github.com/HazyResearch), [research homepage](https://snorkel.stanford.edu)
 
 ## Overview
