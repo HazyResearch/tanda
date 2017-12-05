@@ -1,3 +1,8 @@
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+from __future__ import unicode_literals
+
 import numpy as np
 import tensorflow as tf
 
@@ -226,6 +231,18 @@ class TAN(object):
         return (self.transformer.transform(
             data_rep, tf_seqs, emit_incremental=emit_incremental
         ), tf_seqs, data_rep)
+
+
+    def transform(self, session, x):
+        """Transform single data point
+            @session: a TensorFlow session
+            @x:       original training data point
+        Returns a transformed data point
+        """
+        # Get action sequences
+        tf_seq = self.generator.get_action_sequence(session, 1)[0, :]
+        # Transform data
+        return self.transformer._apply(x, tf_seq, emit_incremental=False)
 
     def get_random_loss(self, session, data, gen_loss=None):
         """

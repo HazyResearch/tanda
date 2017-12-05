@@ -1,6 +1,11 @@
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+from __future__ import unicode_literals
+
 import tensorflow as tf
 
-from discriminator import Discriminator
+from .discriminator import Discriminator
 
 
 def nnet(input_tensor, n_hidden=4):

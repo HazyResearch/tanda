@@ -1,3 +1,9 @@
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+from __future__ import unicode_literals
+
+from keras import backend as K
 from keras.preprocessing.image import ImageDataGenerator
 
 
@@ -5,7 +11,7 @@ class TANDAImageDataGenerator(ImageDataGenerator):
     """Generate minibatches of image data with real-time data augmentation
        using a trained TAN.
     # Arguments
-        tan: trained TAN object.
+        tan: trained `TAN` object.
         featurewise_center: set input mean to 0 over the dataset.
         samplewise_center: set each sample mean to 0.
         featurewise_std_normalization: divide inputs by std of the dataset.
@@ -52,6 +58,7 @@ class TANDAImageDataGenerator(ImageDataGenerator):
             data_format=data_format
         )
         self.tan = tan
+        self.session = K.get_session()
         
     def random_transform(self, x, seed=None):
         """Randomly augment a single image tensor.
@@ -61,12 +68,6 @@ class TANDAImageDataGenerator(ImageDataGenerator):
         # Returns
             A randomly transformed version of the input (same shape).
         """
-        # x is a single image, so it doesn't have image number at index 0
-        img_row_axis = self.row_axis - 1
-        img_col_axis = self.col_axis - 1
-        img_channel_axis = self.channel_axis - 1
-
         if seed is not None:
             np.random.seed(seed)
-
-        return x
+        return self.tan.transform(self.session, x)

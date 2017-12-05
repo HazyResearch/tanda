@@ -1,12 +1,17 @@
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+from __future__ import unicode_literals
+
 import argparse
 import json
 import numpy as np
 import subprocess
 import time
 
+from .utils import create_config_str, get_log_dir_path, num_procs_open
 from collections import OrderedDict
 from itertools import product
-from utils import create_config_str, get_log_dir_path, num_procs_open
 
 
 SLEEP = 10
@@ -28,7 +33,7 @@ if __name__ == '__main__':
     parser.add_argument('--log_root', type=str, default="experiments/log",
                         help='Root for all log files.')
     args = parser.parse_args()
-    print args
+    print(args)
 
     # Load config file
     with open(args.config, 'rb') as f:
@@ -52,7 +57,7 @@ if __name__ == '__main__':
 
     # Fix datetime here so all runs get same one
     log_path = get_log_dir_path(args.log_root, name)
-    print "Log path:", log_path
+    print("Log path:", log_path)
     
     # Iterate over the param configs and launch subprocesses
     run_idxs = []
@@ -79,10 +84,10 @@ if __name__ == '__main__':
                 proc_args += ['--{0}'.format(k), str(v)]
 
         # Launch as subprocess
-        print "Launching model {0}".format(j)
-        print "\t".join(
-            ["%s=%s" % (k, v) for k, v in zip(param_names, param_set)]
-        )
+        print("Launching model {0}".format(j))
+        print("\t".join(
+                    ["%s=%s" % (k, v) for k, v in zip(param_names, param_set)]
+        ))
         p = subprocess.Popen(proc_args)
         procs.append(p)
         ctr = 0
@@ -91,7 +96,7 @@ if __name__ == '__main__':
             ctr += 1
             if ctr >= CTR_LIM:
                 ctr = 0
-                print '{0} processes still running'.format(k)
+                print('{0} processes still running'.format(k))
             if num_procs_open(procs) >= args.procs_lim:
                 time.sleep(SLEEP)
             else:
@@ -106,5 +111,5 @@ if __name__ == '__main__':
         ctr += 1
         if ctr >= CTR_LIM:
             ctr = 0
-            print '{0} processes still running'.format(k)
+            print('{0} processes still running'.format(k))
         time.sleep(SLEEP)

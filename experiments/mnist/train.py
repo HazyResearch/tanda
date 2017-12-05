@@ -1,6 +1,11 @@
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+from __future__ import unicode_literals
+
 import os
 
-from dataset import read_data_sets
+from .dataset import read_data_sets
 from experiments.train_scripts import flags, select_fold, train
 from experiments.tfs.image import *
 from functools import partial
