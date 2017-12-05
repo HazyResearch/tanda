@@ -175,7 +175,7 @@ class Discriminator(object):
 
         # For saving variables
         vars = tf.trainable_variables()
-        vars_list = filter(lambda v : v.name.startswith(name), vars)
+        vars_list = [v for v in vars if v.name.startswith(name)]
         # Note: In order to save batch_norm moving averages--which are needed
         # at test time--need to save them in a collection (see README) with
         # name self.bn_vars_collection, o/w won't get saved!

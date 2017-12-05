@@ -141,14 +141,13 @@ class TAN(object):
         self.d_train_op = None
         if self.train_disc:
             d_name = "discriminator"
-            d_vars = filter(
-                lambda v : v.name.startswith(d_name),
-                tf.trainable_variables()
-            )
-            d_update_ops = filter(
-                lambda u : u.name.startswith(d_name),
-                tf.get_collection(tf.GraphKeys.UPDATE_OPS)
-            )
+            d_vars = [
+                v for v in tf.trainable_variables() if v.name.startswith(d_name)
+            ]
+            d_update_ops = [
+                u for u in tf.get_collection(tf.GraphKeys.UPDATE_OPS)
+                if u.name.startswith(d_name)
+            ]
             with tf.variable_scope(d_name, reuse=self.reuse):
                 d_step = tf.Variable(0, trainable=False)
 
@@ -158,14 +157,14 @@ class TAN(object):
                         global_step=d_step, var_list=d_vars)
 
         # Define generative operation
-        g_vars = filter(
-            lambda v : v.name.startswith(self.generator.name),
-            tf.trainable_variables()
-        )
-        g_update_ops = filter(
-            lambda u : u.name.startswith(self.generator.name),
-            tf.get_collection(tf.GraphKeys.UPDATE_OPS)
-        )
+        g_vars = [
+            v for v in tf.trainable_variables()
+            if v.name.startswith(self.generator.name)
+        ]
+        g_update_ops = [
+            u for u in tf.get_collection(tf.GraphKeys.UPDATE_OPS)
+            if u.name.startswith(self.generator.name)
+        ]
         with tf.variable_scope(self.generator.name, reuse=self.reuse):
             g_step = tf.Variable(0, trainable=False)
 
@@ -206,10 +205,10 @@ class TAN(object):
         ### Saver
         # NOTE: We only save the generative model, this way compatible with a
         # larger range of end models
-        vars_list = filter(
-            lambda v : v.name.startswith(self.generator.name),
-            tf.trainable_variables()
-        )
+        vars_list = [
+            v for v in tf.trainable_variables()
+            if v.name.startswith(self.generator.name)
+        ]
         self.saver = tf.train.Saver(var_list=vars_list)
 
     def get_transformed_data(self, session, data, emit_incremental=False,
@@ -276,7 +275,7 @@ class TAN(object):
         # E.g. see PadCropTransformer class
         d_data_test = self.transformer.transform_basic(data)
         # Update discriminator
-        for _ in xrange(n_disc_steps):
+        for _ in range(n_disc_steps):
             # Get transformed data
             tf_d_data, _, _ = self.get_transformed_data(session, data,
                 emit_incremental=True)
@@ -288,7 +287,7 @@ class TAN(object):
                 d_loss = session.run([self.D_loss], fd)
 
         # Update generator
-        for _ in xrange(n_gen_steps):            
+        for _ in range(n_gen_steps):            
             # Get both incrementally-transformed data and final version
             tf_g_data_inc, tf_seqs, data_rep = self.get_transformed_data(
                 session, data, emit_incremental=True,

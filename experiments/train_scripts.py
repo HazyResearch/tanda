@@ -312,10 +312,9 @@ def train_tan(X, dims, tfs, log_path, d_class=None, t_class=None,
 
     # Shuffle and optionally subsample data
     N_train = FLAGS.n_tan_train if FLAGS.n_tan_train > 0 else X.shape[0]
-    idxs = range(X.shape[0])
     if FLAGS.subsample_seed > 0:
         np.random.seed(FLAGS.subsample_seed)
-    np.random.shuffle(idxs)
+    idxs = np.random.permutation(X.shape[0])
     idxs = idxs[:N_train]
     X = X[idxs]
 
@@ -337,12 +336,13 @@ def train_tan(X, dims, tfs, log_path, d_class=None, t_class=None,
     if FLAGS.is_test:
         # Print TAN generator and discriminator var counts
         tan_vars = tf.trainable_variables()
-        tan_vars_g = filter(lambda v : v.name.startswith('gen'), tan_vars)
+        tan_vars_g = [v for v in tan_vars if v.name.startswith('gen')]
         nvg, _ = slim.model_analyzer.analyze_vars(tan_vars_g, print_info=False)
-        tan_vars_d = filter(lambda v : v.name.startswith('disc'), tan_vars)
+        tan_vars_d = [v for v in tan_vars if v.name.startswith('gen')]
         nvd, _ = slim.model_analyzer.analyze_vars(tan_vars_d, print_info=False)
-        tan_vars_o = filter(
-            lambda v : re.search(r'^gen|disc', v.name) is None, tan_vars)
+        tan_vars_o = [
+            v for v in tan_vars if re.search(r'^gen|disc', v.name) is None
+        ]
         nvo, _ = slim.model_analyzer.analyze_vars(tan_vars_o, print_info=False)
         print("# vars: {0} gen, {1} disc, {2} other".format(nvg, nvd, nvo))
 
@@ -368,7 +368,7 @@ def train_tan(X, dims, tfs, log_path, d_class=None, t_class=None,
 
         # Run minibatch training steps
         n_batches = int(np.ceil(N_train / float(FLAGS.batch_size)))
-        for t in xrange(FLAGS.n_epochs):
+        for t in range(FLAGS.n_epochs):
 
             # Iterate over batches
             d_losses, g_losses, r_losses = [], [], []
@@ -608,7 +608,7 @@ def train_end_model(X_train_full, Y_train_full, X_valid, Y_valid,
     # Print end discriminator variables
     if FLAGS.is_test:
         vars = tf.trainable_variables()
-        D_vars = filter(lambda v : v.name.startswith('D'), vars)
+        D_vars = [v for v in vars if v.name.startswith('D')]
         nv, _ = slim.model_analyzer.analyze_vars(D_vars, print_info=False)
         print("# end discriminator vars: {0}".format(nv))
     
@@ -630,7 +630,7 @@ def train_end_model(X_train_full, Y_train_full, X_valid, Y_valid,
 
         # Run minibatch training steps
         n_batches = int(np.floor(N_train / float(FLAGS.end_batch_size)))
-        for t in xrange(FLAGS.end_epochs):
+        for t in range(FLAGS.end_epochs):
 
             # Iterate over batches
             losses = []

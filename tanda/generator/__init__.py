@@ -1,1 +1,1 @@
-from generator import GRUGenerator, LSTMGenerator, MeanFieldGenerator
+from .generator import GRUGenerator, LSTMGenerator, MeanFieldGenerator

@@ -61,7 +61,7 @@ class RNNCellGenerator(object):
         # Run loopy feed forward
         actions_arr = tf.TensorArray(tf.int32, self.seq_len)
         logits_arr  = tf.TensorArray(tf.float32, self.seq_len)
-        for t in xrange(self.seq_len):
+        for t in range(self.seq_len):
             if t > 0:
                 variable_scope.get_variable_scope().reuse_variables()
             # Compute logits for next action using RNN cell
@@ -140,7 +140,7 @@ class RNNCellGenerator(object):
         that the exact same sequence of actions should be used in all other
         operations in this step!
         """
-        coord   = product(xrange(actions.shape[0]), xrange(actions.shape[1]))
+        coord   = product(range(actions.shape[0]), range(actions.shape[1]))
         feed    = {
             self.batch_size   : actions.shape[0],
             self.input_actions: actions,

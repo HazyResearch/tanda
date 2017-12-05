@@ -42,7 +42,7 @@ class GeneratorRNNCellBuilder(GeneratorCellBuilder):
     def _build_cell(self, m, n_stack=1, wrappers=[]):
         if n_stack == 1:
             cell = self.c(m)
-        cell = rnn.MultiRNNCell([self.c(m) for _ in xrange(n_stack)])
+        cell = rnn.MultiRNNCell([self.c(m) for _ in range(n_stack)])
         # Apply wrappers; use functools.partial to bind other arguments
         for wrapper in wrappers:
             cell = wrapper(cell)

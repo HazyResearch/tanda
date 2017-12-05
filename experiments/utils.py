@@ -40,12 +40,12 @@ def create_subdirs(log_path, sub_dir, run_index):
 
 def save_run_log(log_dict, logdir, name='run_log.json'):
     # Save to file and return log_dict
-    with open(os.path.join(logdir, name), 'wb') as f:
+    with open(os.path.join(logdir, name), 'w') as f:
         json.dump(log_dict, f, sort_keys=True, indent=4)
 
 
 def get_git_revision_short_hash():
-    return check_output(['git', 'rev-parse', '--short', 'HEAD']).strip()
+    return str(check_output(['git', 'rev-parse', '--short', 'HEAD'])).strip()
 
 
 def create_run_log(logdir, flags, name='run_log.json'):
