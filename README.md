@@ -5,9 +5,23 @@
 
 #### [TANDA blog post](https://hazyresearch.github.io/snorkel/blog/tanda.html)
 
-#### Paper (to appear at NIPS 2017): [Learning to Compose Domain-Specific Transformations for Data Augmentation](https://arxiv.org/abs/1709.01643) 
+#### Paper (NIPS 2017): [Learning to Compose Domain-Specific Transformations for Data Augmentation](https://arxiv.org/abs/1709.01643) 
 
-#### Hazy Research: [GitHub](https://github.com/HazyResearch), [research homepage](https://snorkel.stanford.edu)
+#### Hazy Research: [GitHub](https://github.com/HazyResearch), [research homepage](http://snorkel.stanford.edu)
+
+## NEW: an easy-to-use Keras interface
+
+Just in time for NIPS 2017, we're releasing an easy-to-use
+[Keras](https://keras.io/) interface for TANDA. Just train your TAN, load the
+checkpoint, and wrap it in a [`TANDAImageDataGenerator`](keras/tanda_keras.py).
+This will work just like Keras'
+[`ImageDataGenerator`](https://keras.io/preprocessing/image/) and you can plug
+it into any of your existing Keras model training pipelines. As an example,
+check out [`keras/keras_cifar10_example.py`](keras/keras_cifar10_example.py).
+All we did was copy
+Keras' [CIFAR-10 CNN example script](https://github.com/fchollet/keras/blob/master/examples/cifar10_cnn.py)
+and plug in a [pretrained TAN](#pretrained). Easy as that.
+
 
 ## Overview
 
@@ -52,13 +66,15 @@ compose the image transformations to generate realistic augmented images.
 
 ## Installation
 
-First, clone this repo. TANDA uses Python 2.7 and requires
-[a few python packages](python-package-requirement.txt) which can be installed
-using `pip` (or [`conda`](https://www.continuum.io/downloads)).
+First, clone this repo. TANDA is compatable with both Python 2.7 and Python 3.5+
+and requires [a few packages](python-package-requirement.txt) which can be
+installed using `pip` (or [`conda`](https://www.continuum.io/downloads)).
 
 ```bash
 pip install --requirement python-package-requirement.txt
 ```
+
+If you're using the Keras interface, you'll need to install Keras as well.
 
 ## Example usage
 
@@ -89,6 +105,14 @@ Then to train a CIFAR-10 TAN, run:
 ```bash
 example-scripts/cifar-example.sh
 ```
+
+## Pretrained models<a name="pretrained"></a>
+
+We ran the CIFAR-10 script as above and saved the model to
+[`pretrained/cifar10`](pretrained/cifar10) to save you some time if you just
+want to check out an example model. You can load it using the
+[`PretrainedTAN`](tanda/tan.py) helper like we did in the 
+[Keras interface example](keras/keras_cifar10_example.py).
 
 ## Running experiments with custom parameters
 
