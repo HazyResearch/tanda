@@ -1,0 +1,2 @@
+model_checkpoint_path: "tan_checkpoint"
+all_model_checkpoint_paths: "tan_checkpoint"
