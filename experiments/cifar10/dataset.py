@@ -13,6 +13,7 @@ from skimage import img_as_float
 
 def load_cifar10_batch(fpath, one_hot=True, as_float=True):
     with open(fpath, 'rb') as f:
+        # https://stackoverflow.com/questions/11305790
         data = cPickle.load(f, encoding='latin1')
         X = np.copy(data['data']).reshape(-1, 32*32, 3, order='F')
         X = X.reshape(-1, 32, 32, 3)

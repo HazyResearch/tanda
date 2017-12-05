@@ -61,12 +61,14 @@ class TANDAImageDataGenerator(ImageDataGenerator):
         self.session = K.get_session()
 
     def random_transform(self, x, seed=None):
-        """Randomly augment a single image tensor.
+        """Augment a single image tensor using a pretrained TAN. Still called
+            `random_transform` for compatability reasons.
+
         # Arguments
             x: 3D tensor, single image.
             seed: random seed.
         # Returns
-            A randomly transformed version of the input (same shape).
+            A transformed version of the input (same shape).
         """
         if seed is not None:
             np.random.seed(seed)
