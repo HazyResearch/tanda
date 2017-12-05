@@ -18,6 +18,7 @@
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
+from __future__ import unicode_literals
 
 import gzip
 
@@ -27,7 +28,7 @@ from six.moves import xrange  # pylint: disable=redefined-builtin
 from tensorflow.contrib.learn.python.learn.datasets import base
 from tensorflow.python.framework import dtypes
 
-SOURCE_URL = 'https://web.archive.org/web/20170303140123/http://yann.lecun.com/exdb/mnist/'
+SOURCE_URL = 'http://yann.lecun.com/exdb/mnist/'
 
 
 def _read32(bytestream):

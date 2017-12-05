@@ -1,8 +1,13 @@
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+from __future__ import unicode_literals
+
 import numpy as np
 import tensorflow as tf
 import tensorflow.contrib.rnn as rnn
 
-from discriminator import Discriminator
+from .discriminator import Discriminator
 from functools import partial
 
 
@@ -47,7 +52,7 @@ class DCNN(Discriminator):
     def last_layer_size(self):
         n_convs, h, w = 4, D_H, D_W
         z1, z2  = self.dims[0], self.dims[1]
-        for _ in xrange(n_convs):
+        for _ in range(n_convs):
             z1, z2 = int(np.ceil(float(z1) / h)), int(np.ceil(float(z2) / w))
         return int(z1 * z2 * self.df_dim * (2. ** (n_convs - 1)))
 

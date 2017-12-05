@@ -1,3 +1,8 @@
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+from __future__ import unicode_literals
+
 import json
 import numpy as np
 import os
@@ -6,6 +11,7 @@ import tensorflow as tf
 
 from collections import Counter, defaultdict
 from scipy.misc import imsave
+from six import iteritems
 from subprocess import check_output
 from time import strftime
 
@@ -34,12 +40,12 @@ def create_subdirs(log_path, sub_dir, run_index):
 
 def save_run_log(log_dict, logdir, name='run_log.json'):
     # Save to file and return log_dict
-    with open(os.path.join(logdir, name), 'wb') as f:
+    with open(os.path.join(logdir, name), 'w') as f:
         json.dump(log_dict, f, sort_keys=True, indent=4)
 
 
 def get_git_revision_short_hash():
-    return check_output(['git', 'rev-parse', '--short', 'HEAD']).strip()
+    return str(check_output(['git', 'rev-parse', '--short', 'HEAD'])).strip()
 
 
 def create_run_log(logdir, flags, name='run_log.json'):
@@ -151,7 +157,7 @@ def balanced_subsample(X, Y, n_per_class):
 
     # Select indices
     balanced_idxs = []
-    for c, idxs in class_idxs.iteritems():
+    for c, idxs in iteritems(class_idxs):
         np.random.shuffle(idxs)
         balanced_idxs += idxs[:n_per_class]
 
@@ -166,7 +172,7 @@ def line_writer(od, newline=True):
     and prints tab-separated with carriage return.
     """
     print_tuples = []
-    for k, v in od.iteritems():
+    for k, v in iteritems(od):
         if type(v) == str:
             print_tuples.append('{0} {1}'.format(k, v))
         else:
@@ -207,7 +213,7 @@ def parse_config_str(config_str):
 
 def create_config_str(config):
     """Create a string with format kw1=val1,kw2=val2,... from a dict"""
-    return ','.join('{0}={1}'.format(k, v) for k, v in config.iteritems())
+    return ','.join('{0}={1}'.format(k, v) for k, v in iteritems(config))
 
 
 ###

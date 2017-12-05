@@ -1,9 +1,15 @@
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+from __future__ import unicode_literals
+
 import numpy as np
 import os
 import re
 import tensorflow as tf
 import tensorflow.contrib.slim as slim
 
+from .utils import parse_config_str
 from collections import OrderedDict
 from experiments.utils import *
 from functools import partial
@@ -13,7 +19,6 @@ from tanda.generator import (
 )
 from tanda.tan import TAN
 from tanda.transformer import ImageTransformer, PadCropTransformer
-from utils import parse_config_str
 
 
 #####################################################################
@@ -180,7 +185,7 @@ def train(X_train, dims, tfs, Y_train=None, X_valid=None, Y_valid=None,
     # If a TAN-only or full TANDA run, train
     if FLAGS.run_type in ['tanda-full', 'tan-only']:
         if FLAGS.is_test:
-            print "STEP 1: Training TAN"
+            print("STEP 1: Training TAN")
         # Get trained TAN + its checkpoint directory since graph will be reset
         tan, tan_checkpoint_path = train_tan(
             X_train, dims, tfs, log_path, **kwargs
@@ -201,7 +206,7 @@ def train(X_train, dims, tfs, Y_train=None, X_valid=None, Y_valid=None,
 
     if FLAGS.run_type != 'tan-only':
         if FLAGS.is_test:
-            print "STEP 2: Training End Model"
+            print("STEP 2: Training End Model")
         train_end_model(X_train, Y_train, X_valid, Y_valid, n_classes, dims,
             log_path, tan=tan, tan_checkpoint_path=tan_checkpoint_path)
 
@@ -212,7 +217,7 @@ def train(X_train, dims, tfs, Y_train=None, X_valid=None, Y_valid=None,
 
 def select_fold(X, Y):
     n_per_class = FLAGS.n_per_class * FLAGS.n_folds
-    print "N-per-class:", n_per_class
+    print("N-per-class:", n_per_class)
     
     # Set the seed
     assert(FLAGS.subsample_seed > 0)
@@ -233,7 +238,7 @@ def select_fold(X, Y):
     
     # Check that all classes have same number of instances and this
     # number is divides evenly into folds
-    print ' '.join(str(len(v)) for v in class_idxs.values())
+    print(' '.join(str(len(v)) for v in class_idxs.values()))
     assert(all(len(v) == n_per_class for v in class_idxs.values()))
     assert(n_per_class % FLAGS.n_folds == 0)
     n_per_fold = n_per_class / FLAGS.n_folds
@@ -247,12 +252,12 @@ def select_fold(X, Y):
     
     # Get the fold we want
     fold_samp = sorted(folds[FLAGS.run_fold])[:10]
-    print "CONSTRUCTED FOLDS WITH {0} EXAMPLES PER CLASS PER FOLD".format(
+    print("CONSTRUCTED FOLDS WITH {0} EXAMPLES PER CLASS PER FOLD".format(
         n_per_fold
-    )
-    print "RUNNING FOLD {0}: [{1}]...".format(
+    ))
+    print("RUNNING FOLD {0}: [{1}]...".format(
         FLAGS.run_fold, ' '.join(map(str, fold_samp))
-    )
+    ))
     FOLD = np.ravel(folds[FLAGS.run_fold])
     np.random.shuffle(FOLD)
     return X[FOLD], Y[FOLD]
@@ -307,10 +312,9 @@ def train_tan(X, dims, tfs, log_path, d_class=None, t_class=None,
 
     # Shuffle and optionally subsample data
     N_train = FLAGS.n_tan_train if FLAGS.n_tan_train > 0 else X.shape[0]
-    idxs = range(X.shape[0])
     if FLAGS.subsample_seed > 0:
         np.random.seed(FLAGS.subsample_seed)
-    np.random.shuffle(idxs)
+    idxs = np.random.permutation(X.shape[0])
     idxs = idxs[:N_train]
     X = X[idxs]
 
@@ -323,7 +327,7 @@ def train_tan(X, dims, tfs, log_path, d_class=None, t_class=None,
     # Create time stamped directories for logs, plots, and checkpoints
     LOGDIR, PLOTDIR, SAVEDIR = create_subdirs(log_path, 'tan', FLAGS.run_index)
     if FLAGS.is_test:
-        print "LOGDIR: %s" % LOGDIR
+        print("LOGDIR: %s" % LOGDIR)
 
     # Assemble TAN model based on FLAGS
     tan = assemble_tan(
@@ -332,14 +336,15 @@ def train_tan(X, dims, tfs, log_path, d_class=None, t_class=None,
     if FLAGS.is_test:
         # Print TAN generator and discriminator var counts
         tan_vars = tf.trainable_variables()
-        tan_vars_g = filter(lambda v : v.name.startswith('gen'), tan_vars)
+        tan_vars_g = [v for v in tan_vars if v.name.startswith('gen')]
         nvg, _ = slim.model_analyzer.analyze_vars(tan_vars_g, print_info=False)
-        tan_vars_d = filter(lambda v : v.name.startswith('disc'), tan_vars)
+        tan_vars_d = [v for v in tan_vars if v.name.startswith('gen')]
         nvd, _ = slim.model_analyzer.analyze_vars(tan_vars_d, print_info=False)
-        tan_vars_o = filter(
-            lambda v : re.search(r'^gen|disc', v.name) is None, tan_vars)
+        tan_vars_o = [
+            v for v in tan_vars if re.search(r'^gen|disc', v.name) is None
+        ]
         nvo, _ = slim.model_analyzer.analyze_vars(tan_vars_o, print_info=False)
-        print "# vars: {0} gen, {1} disc, {2} other".format(nvg, nvd, nvo)
+        print("# vars: {0} gen, {1} disc, {2} other".format(nvg, nvd, nvo))
 
     # Initialize and save log file
     log_dict = create_run_log(LOGDIR, FLAGS)
@@ -363,7 +368,7 @@ def train_tan(X, dims, tfs, log_path, d_class=None, t_class=None,
 
         # Run minibatch training steps
         n_batches = int(np.ceil(N_train / float(FLAGS.batch_size)))
-        for t in xrange(FLAGS.n_epochs):
+        for t in range(FLAGS.n_epochs):
 
             # Iterate over batches
             d_losses, g_losses, r_losses = [], [], []
@@ -457,7 +462,7 @@ def train_tan(X, dims, tfs, log_path, d_class=None, t_class=None,
             if FLAGS.save_model:
                 tan.save(session, os.path.join(SAVEDIR, 'tan_checkpoint'))
                 if FLAGS.is_test:
-                    print "Saved model"
+                    print("Saved model")
 
     # Return trained TAN + checkpoint save dir
     return tan, SAVEDIR
@@ -551,14 +556,14 @@ def train_end_model(X_train_full, Y_train_full, X_valid, Y_valid,
         N_u = X_train_full.shape[0]
         X_u = np.copy(X_train_full).reshape([N_u, dims_flat])
     if FLAGS.is_test:
-        print "N_train=%s, N_u=%s" % (N_train, N_u)
+        print("N_train=%s, N_u=%s" % (N_train, N_u))
 
     # Create time stamped directories for logs, plots, and checkpoints
     LOGDIR, PLOTDIR, SAVEDIR = create_subdirs(
         log_path, 'end_model', FLAGS.run_index
     )
     if FLAGS.is_test:
-        print "LOGDIR: %s" % LOGDIR
+        print("LOGDIR: %s" % LOGDIR)
 
     # Initialize and save log file
     log_dict = create_run_log(LOGDIR, FLAGS)
@@ -603,9 +608,9 @@ def train_end_model(X_train_full, Y_train_full, X_valid, Y_valid,
     # Print end discriminator variables
     if FLAGS.is_test:
         vars = tf.trainable_variables()
-        D_vars = filter(lambda v : v.name.startswith('D'), vars)
+        D_vars = [v for v in vars if v.name.startswith('D')]
         nv, _ = slim.model_analyzer.analyze_vars(D_vars, print_info=False)
-        print "# end discriminator vars: {0}".format(nv)
+        print("# end discriminator vars: {0}".format(nv))
     
     # Train end model
     with tf.Session() as sess:
@@ -625,7 +630,7 @@ def train_end_model(X_train_full, Y_train_full, X_valid, Y_valid,
 
         # Run minibatch training steps
         n_batches = int(np.floor(N_train / float(FLAGS.end_batch_size)))
-        for t in xrange(FLAGS.end_epochs):
+        for t in range(FLAGS.end_epochs):
 
             # Iterate over batches
             losses = []
@@ -736,7 +741,7 @@ def train_end_model(X_train_full, Y_train_full, X_valid, Y_valid,
             writer.add_summary(
                 p_transform_plotter.get_summary(sess, p_transform), c)
             if FLAGS.is_test:
-                print 'p_transform=%s' % p_transform
+                print('p_transform=%s' % p_transform)
 
             # Optionally decay learning rate
             if FLAGS.end_lr_mode == 'schedule':
@@ -744,7 +749,7 @@ def train_end_model(X_train_full, Y_train_full, X_valid, Y_valid,
                     lr_si += 1
                     lr = lr_schedule[lr_si][1]
                 if FLAGS.is_test:
-                    print 'lr=%s' % lr
+                    print('lr=%s' % lr)
 
             # Reshuffle
             idxs = range(X_train.shape[0])

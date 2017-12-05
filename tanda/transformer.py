@@ -1,3 +1,8 @@
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+from __future__ import unicode_literals
+
 import copy
 import numpy as np
 
@@ -42,7 +47,8 @@ class Transformer(object):
             xc = self.tfs[i](xc)
             xcs.append(self.post_tf(copy.deepcopy(xc)))
 
-        # Return either just the final transformed version, or all the incremental ones
+        # Return either just the final transformed version, or all the
+        # incremental ones
         if emit_incremental:
             return np.vstack(xcs)
         else:
@@ -71,6 +77,9 @@ class Transformer(object):
 
     def transform_basic(self, X, train=False):
         return X
+
+    def __call__(self, x, tf_seq):
+        return self._apply(x, tf_seq, False).reshape(x.shape)
 
 
 class ImageTransformer(Transformer):

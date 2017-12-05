@@ -1,6 +1,6 @@
 #!/bin/bash
 source set_env.sh
-python experiments/cifar10/train.py \
+python -m experiments.cifar10.train \
 	--run_type tan-only \
 	--generator gru \
 	--gen_config init_type=train,feed_actions=True,n_stack=1,logit_range=6.0 \

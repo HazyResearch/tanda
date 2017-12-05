@@ -1,3 +1,8 @@
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+from __future__ import unicode_literals
+
 import tensorflow as tf
 import tensorflow.contrib.rnn as rnn
 
@@ -37,7 +42,7 @@ class GeneratorRNNCellBuilder(GeneratorCellBuilder):
     def _build_cell(self, m, n_stack=1, wrappers=[]):
         if n_stack == 1:
             cell = self.c(m)
-        cell = rnn.MultiRNNCell([self.c(m) for _ in xrange(n_stack)])
+        cell = rnn.MultiRNNCell([self.c(m) for _ in range(n_stack)])
         # Apply wrappers; use functools.partial to bind other arguments
         for wrapper in wrappers:
             cell = wrapper(cell)

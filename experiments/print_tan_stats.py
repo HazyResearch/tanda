@@ -1,3 +1,8 @@
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+from __future__ import unicode_literals
+
 import argparse
 import json
 import os
@@ -68,5 +73,5 @@ if __name__ == '__main__':
     # Form dataframe
     del data['run_index']
     pd.set_option('display.width', 150)
-    print pd.DataFrame(data=data, index=index).sort_values(
-        by=args.sort_by, ascending=False)
+    print(pd.DataFrame(data=data, index=index).sort_values(
+        by=args.sort_by, ascending=False))

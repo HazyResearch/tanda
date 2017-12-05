@@ -1,1 +1,1 @@
-from image_tfs import *
+from .image_tfs import *
