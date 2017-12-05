@@ -1,8 +1,15 @@
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+from __future__ import unicode_literals
+
 import numpy as np
-import cPickle
 import os
-from skimage import img_as_float
+
 from functools import partial
+from six.moves import cPickle
+from skimage import img_as_float
+
 
 def load_cifar10_batch(fpath, one_hot=True, as_float=True):
     with open(fpath, 'rb') as f:
@@ -27,6 +34,7 @@ def to_one_hot(y, n_classes=10):
     for i in range(y.shape[0]):
         Y[i, y[i]] = 1
     return Y
+
 
 def load_cifar10_data(data_root, one_hot=True, as_float=True,
     validation_set=True):

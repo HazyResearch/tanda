@@ -20,12 +20,17 @@ https://arxiv.org/pdf/1603.05027v2.pdf
 https://arxiv.org/pdf/1512.03385v1.pdf
 https://arxiv.org/pdf/1605.07146v1.pdf
 """
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+from __future__ import unicode_literals
+
 import numpy as np
 import six
 import tensorflow as tf
 
+from .discriminator import Discriminator
 from collections import namedtuple
-from discriminator import Discriminator
 from functools import partial
 
 
