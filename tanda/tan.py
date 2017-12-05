@@ -6,6 +6,8 @@ from __future__ import unicode_literals
 import numpy as np
 import tensorflow as tf
 
+from .discriminator import DCNN
+
 
 ADAM = tf.train.AdamOptimizer
 SGD  = tf.train.GradientDescentOptimizer
@@ -241,7 +243,7 @@ class TAN(object):
         # Get action sequences
         tf_seq = self.generator.get_action_sequence(session, 1)[0, :]
         # Transform data
-        return self.transformer._apply(x, tf_seq, emit_incremental=False)
+        return self.transformer(x, tf_seq)
 
     def get_random_loss(self, session, data, gen_loss=None):
         """
@@ -324,3 +326,12 @@ class TAN(object):
 
     def restore(self, session, save_path):
         self.saver.restore(session, save_path)
+
+
+def PretrainedTAN(generator, transformer, dims, session, checkpoint_path):
+    # Build dummy discriminator
+    discriminator = DCNN(dims=dims)
+    # Build TAN
+    tan = TAN(discriminator, generator, transformer, 0, 0)
+    tan.restore(session, checkpoint_path)
+    return tan
