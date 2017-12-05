@@ -22,7 +22,6 @@ All we did was copy
 Keras' [CIFAR-10 CNN example script](https://github.com/fchollet/keras/blob/master/examples/cifar10_cnn.py)
 and plug in a [pretrained TAN](#pretrained). Easy as that.
 
-
 ## Overview
 
 Using data augmentation on benchmark machine learning tasks, like MNIST and
