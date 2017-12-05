@@ -233,7 +233,6 @@ class TAN(object):
             data_rep, tf_seqs, emit_incremental=emit_incremental
         ), tf_seqs, data_rep)
 
-
     def transform(self, session, x):
         """Transform single data point
             @session: a TensorFlow session

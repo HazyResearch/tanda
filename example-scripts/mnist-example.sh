@@ -1,6 +1,6 @@
 #!/bin/bash
 source set_env.sh
-python experiments/mnist/train.py \
+python -m experiments.mnist.train \
 	--run_type tan-only \
 	--generator mean_field \
 	--gen_config init_type=train,feed_actions=False \

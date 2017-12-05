@@ -4,7 +4,7 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 # NB: IMPORT utils FIRST SO THAT MATPLOTLIB DOESN'T GET MESSED UP!!!
-from utils import (
+from .utils import (
     generate_data, save_data_plot, OracleDiscriminator
 )
 from experiments.tfs.image import *

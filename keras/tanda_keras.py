@@ -59,7 +59,7 @@ class TANDAImageDataGenerator(ImageDataGenerator):
         )
         self.tan = tan
         self.session = K.get_session()
-        
+
     def random_transform(self, x, seed=None):
         """Randomly augment a single image tensor.
         # Arguments
