@@ -4,7 +4,7 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 # NB: IMPORT utils FIRST SO THAT MATPLOTLIB DOESN'T GET MESSED UP!!!
-from .utils import (
+from utils import (
     generate_data, save_data_plot, OracleDiscriminator
 )
 from experiments.tfs.image import *
@@ -46,8 +46,8 @@ def TF_displace(x, d=0):
     """Displace point by vector d"""
     return x + d
 
-small_disps = [0.2 * (np.random.random(d) - 0.5) for _ in xrange(10)]
-large_disps = [4.0 * (np.random.random(d) - 0.5) for _ in xrange(5)]
+small_disps = [0.2 * (np.random.random(d) - 0.5) for _ in range(10)]
+large_disps = [4.0 * (np.random.random(d) - 0.5) for _ in range(5)]
 
 if FLAGS.is_test and FLAGS.tfs == 0:
     for disp in small_disps + large_disps:
