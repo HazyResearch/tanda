@@ -258,15 +258,14 @@ class TAN(object):
             data_rep, tf_seqs, emit_incremental=emit_incremental
         ), tf_seqs, data_rep)
 
-    def transform(self, session, x, use_cache=True):
+    def transform(self, session, x):
         """Transform single data point
             @session:   a TensorFlow session
             @x:         original training data point
-            @use_cache: use TF seq cache?
-        Returns a transformed data point
+        Returns a transformed data point; uses TF queue if initialized
         """
         # Get action sequences
-        if use_cache:
+        if self.tf_q is not None:
             tf_seq = self.tf_q.next(session)
         else:
             tf_seq = self.generator.get_action_sequence(session, 1)[0, :]
