@@ -24,11 +24,30 @@ def per_image_std_map(X, img_dims, dims_out):
     return tf.reshape(imgs, dims_out)
 
 
+class TFQ(object):
+    def __init__(self, generator, size):
+        self.generator = generator
+        self.size = size
+        self._q = None
+        self._i = size
+
+    def init_q(self, session):
+        self._q = self.generator.get_action_sequence(session, self.size)
+        self._i = 0
+
+    def next(self, session):
+        if self._i >= self.size:
+            self.init_q(session)
+        self._i += 1
+        return self._q[self._i - 1, :]
+
+
 class TAN(object):
     """Transormation Adversarial Network"""
     def __init__(self, discriminator, generator, transformer, d_lr, g_lr,
                  mse_term=1.0, mse_layer=None, d_trainer=ADAM, g_trainer=SGD,
-                 reuse=False, gamma=0.0, per_img_std=False, train_disc=True):
+                 reuse=False, gamma=0.0, per_img_std=False, train_disc=True,
+                 tf_seq_queue_size=None):
         self.discriminator = discriminator
         self.generator = generator
         self.transformer = transformer
@@ -42,6 +61,12 @@ class TAN(object):
         self.g_train_op = None
         self.batch_size = self.generator.batch_size
         self.reuse      = reuse
+        # Optionally initialize a TF seq queue for batch generation
+        if not tf_seq_queue_size:
+            self.tf_q = None
+        else:
+            self.tf_q = TFQ(generator, tf_seq_queue_size)
+        # Build model graph
         self._build(d_lr, g_lr, mse_term, mse_layer, d_trainer, g_trainer,
             gamma, per_img_std)
 
@@ -233,14 +258,18 @@ class TAN(object):
             data_rep, tf_seqs, emit_incremental=emit_incremental
         ), tf_seqs, data_rep)
 
-    def transform(self, session, x):
+    def transform(self, session, x, use_cache=True):
         """Transform single data point
-            @session: a TensorFlow session
-            @x:       original training data point
+            @session:   a TensorFlow session
+            @x:         original training data point
+            @use_cache: use TF seq cache?
         Returns a transformed data point
         """
         # Get action sequences
-        tf_seq = self.generator.get_action_sequence(session, 1)[0, :]
+        if use_cache:
+            tf_seq = self.tf_q.next(session)
+        else:
+            tf_seq = self.generator.get_action_sequence(session, 1)[0, :]
         # Transform data
         return self.transformer(x, tf_seq)
 
@@ -327,10 +356,10 @@ class TAN(object):
         self.saver.restore(session, save_path)
 
 
-def PretrainedTAN(generator, transformer, dims, session, checkpoint_path):
+def PretrainedTAN(G, T, dims, session, checkpoint_path, tf_seq_queue_size=5000):
     # Build dummy discriminator
-    discriminator = DCNN(dims=dims)
+    D = DCNN(dims=dims)
     # Build TAN
-    tan = TAN(discriminator, generator, transformer, 0, 0)
+    tan = TAN(D, G, T, 0, 0, tf_seq_queue_size=tf_seq_queue_size)
     tan.restore(session, checkpoint_path)
     return tan
