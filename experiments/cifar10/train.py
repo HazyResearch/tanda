@@ -3,6 +3,9 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
+import sys
+import re
+
 from .dataset import load_cifar10_data
 from experiments.train_scripts import flags, select_fold, train
 from experiments.tfs.image import *
@@ -35,7 +38,6 @@ tfs = list(chain.from_iterable([
 #####################################################################
 
 if __name__ == '__main__':
-
     # Load CIFAR10 data
     dims     = [32, 32, 3]
     DATA_DIR = 'experiments/cifar10/data/cifar-10-batches-py'
@@ -44,6 +46,12 @@ if __name__ == '__main__':
 
     if FLAGS.n_folds > 0:
         X_train, Y_train = select_fold(X_train, Y_train)
+
+    # Make sure dims and current module name is included in the run log
+    # Note: this is currently kind of hackey, should clean up...
+    FLAGS.__flags['train_module'] = re.sub(r'\/', '.',
+        re.sub(r'\.py$', '', re.sub(r'.*tanda/', '', __file__)))
+    FLAGS.__flags['dims'] = dims
 
     # Run training scripts
     train(X_train, dims, tfs, Y_train=Y_train, X_valid=X_valid, Y_valid=Y_valid,
