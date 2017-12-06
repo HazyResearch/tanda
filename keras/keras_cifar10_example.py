@@ -1,7 +1,8 @@
 '''Train a simple deep CNN on the CIFAR10 small images dataset.
 
 Replicated from `keras/examples/cifar10_cnn.py` to demonstrate 
-`TANDAImageDataGenerator` usage
+`TANDAImageDataGenerator` usage. By default, we subsample to 10% of the training
+data to benchmark data augmentation performance.
 '''
 
 from __future__ import absolute_import
@@ -13,6 +14,7 @@ import os
 import keras
 
 from experiments.cifar10.train import tfs
+from experiments.utils import balanced_subsample
 from keras.datasets import cifar10
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Activation, Flatten
@@ -29,18 +31,26 @@ CHECKPOINT_PATH = os.path.join(TAN_PATH, 'checkpoints', 'tan_checkpoint')
 batch_size = 32
 num_classes = 10
 epochs = 100
+train_frac = 0.1
 
 
 if __name__ == '__main__':
     # The data, shuffled and split between train and test sets:
     (x_train, y_train), (x_test, y_test) = cifar10.load_data()
-    print('x_train shape:', x_train.shape)
-    print(x_train.shape[0], 'train samples')
-    print(x_test.shape[0], 'test samples')
 
     # Convert class vectors to binary class matrices.
     y_train = keras.utils.to_categorical(y_train, num_classes)
     y_test = keras.utils.to_categorical(y_test, num_classes)
+
+    # Sample training data
+    if 0 < train_frac < 1:
+        n_per_class = int(x_train.shape[0] / num_classes * train_frac)
+        x_train, y_train = balanced_subsample(x_train, y_train, n_per_class)
+    print('x_train shape:', x_train.shape)
+    print(x_train.shape[0], 'train samples')
+    print(x_test.shape[0], 'test samples')
+
+    
 
     model = Sequential()
     model.add(Conv2D(32, (3, 3), padding='same',
