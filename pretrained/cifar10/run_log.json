@@ -2,6 +2,7 @@
     "batch_size": 32,
     "commit_hash": "b'9cdfe57\\n'",
     "date_stamp": null,
+    "dims": [32, 32, 3],
     "disc_lr": 1e-05,
     "discriminator": "dcnn",
     "end_batch_size": 50,
@@ -53,6 +54,7 @@
     "tan_checkpoint_path": null,
     "time_stamp": null,
     "train_disc": true,
+    "train_module": "experiments.cifar10.train",
     "transform_validation_set": false,
     "transformer": "image",
     "validation_set": true

@@ -5,6 +5,7 @@ from __future__ import unicode_literals
 
 from keras import backend as K
 from keras.preprocessing.image import ImageDataGenerator
+from utils import load_pretrained_tan
 
 
 class TANDAImageDataGenerator(ImageDataGenerator):
@@ -36,7 +37,7 @@ class TANDAImageDataGenerator(ImageDataGenerator):
     """
 
     def __init__(self,
-                 tan,
+                 tan_path,
                  featurewise_center=False,
                  samplewise_center=False,
                  featurewise_std_normalization=False,
@@ -57,7 +58,7 @@ class TANDAImageDataGenerator(ImageDataGenerator):
             preprocessing_function=preprocessing_function,
             data_format=data_format
         )
-        self.tan = tan
+        self.tan = load_pretrained_tan(tan_path)
         self.session = K.get_session()
 
     def random_transform(self, x, seed=None):
