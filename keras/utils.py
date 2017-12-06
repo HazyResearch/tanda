@@ -17,7 +17,7 @@ from tanda.transformer import PadCropTransformer
 
 def load_pretrained_tan(path):
     # Load config dictionary from run log
-    with open(os.path.join(path, 'run_log.json'), 'r') as f:
+    with open(os.path.join(path, 'logs', 'run_log.json'), 'r') as f:
         config = json.load(f)
 
     # Load TFs

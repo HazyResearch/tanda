@@ -12,7 +12,8 @@ class TANDAImageDataGenerator(ImageDataGenerator):
     """Generate minibatches of image data with real-time data augmentation
        using a trained TAN.
     # Arguments
-        tan: trained `TAN` object.
+        tan: trained `TAN` object, or path to a trained `TAN` object (the
+            directory which contains `log` and `checkpoint`)
         featurewise_center: set input mean to 0 over the dataset.
         samplewise_center: set each sample mean to 0.
         featurewise_std_normalization: divide inputs by std of the dataset.
@@ -37,7 +38,7 @@ class TANDAImageDataGenerator(ImageDataGenerator):
     """
 
     def __init__(self,
-                 tan_path,
+                 tan,
                  featurewise_center=False,
                  samplewise_center=False,
                  featurewise_std_normalization=False,
@@ -58,7 +59,10 @@ class TANDAImageDataGenerator(ImageDataGenerator):
             preprocessing_function=preprocessing_function,
             data_format=data_format
         )
-        self.tan = load_pretrained_tan(tan_path)
+        if isinstance(tan, str):
+            self.tan = load_pretrained_tan(tan)
+        else:
+            self.tan = tan
         self.session = K.get_session()
 
     def random_transform(self, x, seed=None):
