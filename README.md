@@ -11,10 +11,10 @@
 
 ## NEW: an easy-to-use Keras interface
 
-Just in time for NIPS 2017, we're releasing an easy-to-use substitute for Keras'
+Just in time for NIPS 2017, we're releasing an **easy-to-use substitute for Keras'
 [`ImageDataGenerator`](https://keras.io/preprocessing/image/) data augmentation
 class. Just swap in [`TANDAImageDataGenerator`](keras/tanda_keras.py) and you'll
-be using our trained data augmentation models! For a recipe on how to use it,
+be using our trained data augmentation models!** For a recipe on how to use it,
 check out [`keras/keras_cifar10_example.py`](keras/keras_cifar10_example.py).
 All we did was copy
 Keras' [CIFAR-10 CNN example script](https://github.com/fchollet/keras/blob/master/examples/cifar10_cnn.py)
