@@ -23,9 +23,8 @@ from tanda_keras import TANDAImageDataGenerator
 from utils import load_pretrained_tan
 
 
-TAN_PATH = os.path.join(os.environ['TANDAHOME'], 'pretrained', 'cifar10')
-CONFIG_PATH = os.path.join(TAN_PATH, 'run_log.json')
-CHECKPOINT_PATH = os.path.join(TAN_PATH, 'checkpoints', 'tan_checkpoint')
+CONFIG_PATH = 'PATH_TO_TRAINED_TAN_RESULTS/run_log.json'
+CHECKPOINT_PATH = 'PATH_TO_TRAINED_TAN_RESULTS/checkpoints/tan_checkpoint'
 
 
 batch_size = 32
