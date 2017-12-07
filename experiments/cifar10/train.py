@@ -47,12 +47,6 @@ if __name__ == '__main__':
     if FLAGS.n_folds > 0:
         X_train, Y_train = select_fold(X_train, Y_train)
 
-    # Make sure dims and current module name is included in the run log
-    # Note: this is currently kind of hackey, should clean up...
-    FLAGS.__flags['train_module'] = re.sub(r'\/', '.',
-        re.sub(r'\.py$', '', re.sub(r'.*tanda/', '', __file__)))
-    FLAGS.__flags['dims'] = dims
-
     # Run training scripts
     train(X_train, dims, tfs, Y_train=Y_train, X_valid=X_valid, Y_valid=Y_valid,
         n_classes=10)

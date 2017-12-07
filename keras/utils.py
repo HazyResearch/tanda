@@ -4,7 +4,7 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import json
-from import_lib import import_module
+import pickle
 
 from experiments.train_scripts import GENERATORS
 from experiments.utils import parse_config_str
@@ -21,8 +21,8 @@ def load_pretrained_tan(path):
         config = json.load(f)
 
     # Load TFs
-    # Assume they are present in config['train_module'] as list called tfs
-    tfs = import_module(config['train_module']).tfs
+    with open(os.path.join(path, 'tfs.pkl'), 'w') as f:
+        tfs = pickle.load(f)
     
     # Build transformer
     T = PadCropTransformer(tfs, dims=config['dims'])
