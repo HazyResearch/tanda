@@ -22,9 +22,9 @@ from keras.layers import Conv2D, MaxPooling2D
 from tanda_keras import TANDAImageDataGenerator
 from utils import load_pretrained_tan
 
-
-CONFIG_PATH = 'PATH_TO_TRAINED_TAN_RESULTS/run_log.json'
-CHECKPOINT_PATH = 'PATH_TO_TRAINED_TAN_RESULTS/checkpoints/tan_checkpoint'
+TAN_PATH = # TODO: Insert path here!
+CONFIG_PATH = os.path.join(TAN_PATH, 'logs', 'run_log.json')
+CHECKPOINT_PATH = os.path.join(TAN_PATH, 'checkpoints', 'tan_checkpoint')
 
 
 batch_size = 32
