@@ -153,7 +153,7 @@ flags.DEFINE_integer("rand_loss_every", 1,
 flags.DEFINE_integer("plot_every", 50, "Period at which to plot images")
 flags.DEFINE_string("date_stamp", None, "Date stamp for logs")
 flags.DEFINE_string("time_stamp", None, "Time stamp for logs")
-flags.DEFINE_boolean("save_action_seqs", True, "Write out action seqs to file.")
+flags.DEFINE_boolean("save_action_seqs", False, "Write out action seqs to file")
 
 # For testing transforming the test set as well
 flags.DEFINE_boolean("transform_validation_set", False,

@@ -11,14 +11,14 @@
 
 ## NEW: an easy-to-use Keras interface
 
-Just in time for NIPS 2017, we're releasing an easy-to-use substitute for Keras'
+Just in time for NIPS 2017, we're releasing an **easy-to-use substitute for Keras'
 [`ImageDataGenerator`](https://keras.io/preprocessing/image/) data augmentation
 class. Just swap in [`TANDAImageDataGenerator`](keras/tanda_keras.py) and you'll
-be using our trained data augmentation models! As an example,
+be using our trained data augmentation models!** For a recipe on how to use it,
 check out [`keras/keras_cifar10_example.py`](keras/keras_cifar10_example.py).
 All we did was copy
 Keras' [CIFAR-10 CNN example script](https://github.com/fchollet/keras/blob/master/examples/cifar10_cnn.py)
-and plug in a [pretrained TAN](#pretrained). Easy as that.
+and plug in the `TANDAImageDataGenerator`. Easy as that.
 
 ## Overview
 
@@ -102,14 +102,6 @@ Then to train a CIFAR-10 TAN, run:
 ```bash
 example-scripts/cifar-example.sh
 ```
-
-## Pretrained models<a name="pretrained"></a>
-
-We ran the CIFAR-10 script as above and saved the model to
-[`pretrained/cifar10`](pretrained/cifar10) to save you some time if you just
-want to check out an example model. You can load it using the
-[`PretrainedTAN`](tanda/tan.py) helper like we did in the 
-[Keras interface example](keras/keras_cifar10_example.py).
 
 ## Running experiments with custom parameters
 

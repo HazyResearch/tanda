@@ -1,6 +1,6 @@
 #!/bin/bash
 source set_env.sh
-python -m experiments.mnist.train \
+python experiments/mnist/train.py \
 	--run_type tan-only \
 	--generator mean_field \
 	--gen_config init_type=train,feed_actions=False \
@@ -17,5 +17,4 @@ python -m experiments.mnist.train \
 	--n_epochs 1 \
 	--run_name mnist_tan \
 	--is_test True \
-	--plot_every 1 \
 	--save_model False
