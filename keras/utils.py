@@ -4,7 +4,7 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import json
-from six import pickle
+from six import cPickle
 
 from experiments.train_scripts import GENERATORS
 from experiments.utils import parse_config_str
@@ -22,7 +22,7 @@ def load_pretrained_tan(path):
 
     # Load TFs
     with open(os.path.join(path, 'tfs.pkl'), 'w') as f:
-        tfs = pickle.load(f)
+        tfs = cPickle.load(f)
     
     # Build transformer
     T = PadCropTransformer(tfs, dims=config['dims'])
