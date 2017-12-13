@@ -4,7 +4,7 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import json
-import pickle
+from six import pickle
 
 from experiments.train_scripts import GENERATORS
 from experiments.utils import parse_config_str

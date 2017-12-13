@@ -8,7 +8,6 @@ import os
 import re
 import tensorflow as tf
 import tensorflow.contrib.slim as slim
-import sys
 import cloud
 
 from .utils import parse_config_str

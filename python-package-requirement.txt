@@ -6,3 +6,4 @@ scikit-image>=0.13
 scipy>=0.18
 six
 tensorflow>=1.2
+cloud

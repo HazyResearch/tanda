@@ -3,10 +3,9 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
-import sys
 import re
 
-from .dataset import load_cifar10_data
+from dataset import load_cifar10_data
 from experiments.train_scripts import flags, select_fold, train
 from experiments.tfs.image import *
 from functools import partial
