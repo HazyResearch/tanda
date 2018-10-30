@@ -46,6 +46,8 @@ class TANDAImageDataGenerator(ImageDataGenerator):
                  rescale=None,
                  preprocessing_function=None,
                  data_format=None):
+        raise RuntimeError('`TANDAImageDataGenerator` is currently broken \
+            due to API alignment issues. See Issue #17 for progress.')
         super(TANDAImageDataGenerator, self).__init__(
             featurewise_center=featurewise_center,
             samplewise_center=samplewise_center,
