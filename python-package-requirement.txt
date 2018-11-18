@@ -1,3 +1,4 @@
+cloud
 matplotlib
 numpy>=1.11
 pandas

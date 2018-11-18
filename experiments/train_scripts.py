@@ -8,6 +8,7 @@ import os
 import re
 import tensorflow as tf
 import tensorflow.contrib.slim as slim
+import cloud
 
 from .utils import parse_config_str
 from collections import OrderedDict
@@ -329,6 +330,12 @@ def train_tan(X, dims, tfs, log_path, d_class=None, t_class=None,
     if FLAGS.is_test:
         print("LOGDIR: %s" % LOGDIR)
 
+    # Also pickle and save the TFs
+    # Note: Can be reloaded with standard pickle.load
+    tfs_pickle_path = os.path.join(log_path, 'tan', FLAGS.run_index, 'tfs.pkl')
+    with open(tfs_pickle_path, 'w') as f:
+        cloud.serialization.cloudpickle.dump(tfs, f)
+
     # Assemble TAN model based on FLAGS
     tan = assemble_tan(
         dims, tfs, d_class=d_class, t_class=t_class, t_kwargs=t_kwargs
@@ -346,8 +353,9 @@ def train_tan(X, dims, tfs, log_path, d_class=None, t_class=None,
         nvo, _ = slim.model_analyzer.analyze_vars(tan_vars_o, print_info=False)
         print("# vars: {0} gen, {1} disc, {2} other".format(nvg, nvd, nvo))
 
-    # Initialize and save log file
+    # Initialize and save log file; also save dims here
     log_dict = create_run_log(LOGDIR, FLAGS)
+    log_dict['dims'] = dims
 
     # As default create ImagePlotter for routing images into Tensorboard
     if plotter is None and FLAGS.plot_every > 0:
@@ -565,8 +573,9 @@ def train_end_model(X_train_full, Y_train_full, X_valid, Y_valid,
     if FLAGS.is_test:
         print("LOGDIR: %s" % LOGDIR)
 
-    # Initialize and save log file
+    # Initialize and save log file; also save dims here
     log_dict = create_run_log(LOGDIR, FLAGS)
+    log_dict['dims'] = dims
 
     # Create ImagePlotter for routing images into Tensorboard
     plot_names = ['plot_%s' % run_type]

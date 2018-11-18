@@ -35,7 +35,6 @@ tfs = list(chain.from_iterable([
 #####################################################################
 
 if __name__ == '__main__':
-
     # Load CIFAR10 data
     dims     = [32, 32, 3]
     DATA_DIR = 'experiments/cifar10/data/cifar-10-batches-py'
