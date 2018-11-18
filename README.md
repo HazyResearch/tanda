@@ -5,13 +5,13 @@
 
 #### [TANDA blog post](https://hazyresearch.github.io/snorkel/blog/tanda.html)
 
-#### Paper (NIPS 2017): [Learning to Compose Domain-Specific Transformations for Data Augmentation](https://arxiv.org/abs/1709.01643) 
+#### Paper (NeurIPS 2017): [Learning to Compose Domain-Specific Transformations for Data Augmentation](https://arxiv.org/abs/1709.01643) 
 
 #### Hazy Research: [GitHub](https://github.com/HazyResearch), [research homepage](http://snorkel.stanford.edu)
 
 ## NEW: an easy-to-use Keras interface
 
-Just in time for NIPS 2017, we're releasing an **easy-to-use substitute for Keras'
+Just in time for NeurIPS 2017, we're releasing an **easy-to-use substitute for Keras'
 [`ImageDataGenerator`](https://keras.io/preprocessing/image/) data augmentation
 class. Just swap in [`TANDAImageDataGenerator`](keras/tanda_keras.py) and you'll
 be using our trained data augmentation models!** For a recipe on how to use it,
