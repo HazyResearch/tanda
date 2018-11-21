@@ -1,0 +1,20 @@
+{
+    "name" : "end_model_full_scale_config",
+    "parameters" : {
+        "validation_set": [false],
+        "transformer": ["image-pct"],
+        "p_transform_init": [1.0],
+        "p_transform_max": [1.0],
+        "p_transform_drop": [140],
+        "end_epochs" : [150],
+        "end_per_img_std" : [true],
+        "n_per_class" : [0],
+        "end_weight_decay" : [0.0002],
+        "end_optimizer" : ["momentum"],
+        "end_lr_mode" : ["schedule"],
+        "end_lr_schedule": [1],
+        "eval_every": [10],
+        "seq_len": [5],
+        "ls_term": [0.0],
+    }
+}
