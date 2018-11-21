@@ -5,6 +5,7 @@ from __future__ import unicode_literals
 
 import numpy as np
 import os
+import six
 
 from functools import partial
 from six.moves import cPickle
@@ -14,7 +15,10 @@ from skimage import img_as_float
 def load_cifar10_batch(fpath, one_hot=True, as_float=True):
     with open(fpath, 'rb') as f:
         # https://stackoverflow.com/questions/11305790
-        data = cPickle.load(f, encoding='latin1')
+        if six.PY3:
+            data = cPickle.load(f, encoding='latin-1')
+        else:
+            data = cPickle.load(f)
         X = np.copy(data['data']).reshape(-1, 32*32, 3, order='F')
         X = X.reshape(-1, 32, 32, 3)
         Y = np.array(data['labels'])
