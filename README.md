@@ -64,14 +64,18 @@ compose the image transformations to generate realistic augmented images.
 ## Installation
 
 First, clone this repo. TANDA is compatable with both Python 2.7 and Python 3.5+
-and requires [a few packages](python-package-requirement.txt) which can be
-installed using `pip` (or [`conda`](https://www.continuum.io/downloads)).
+and requires [a few packages](python-package-requirement.txt) (see note below) which
+can be installed using `pip` (or [`conda`](https://www.continuum.io/downloads)).
 
 ```bash
 pip install --requirement python-package-requirement.txt
 ```
 
 If you're using the Keras interface, you'll need to install Keras as well.
+
+*Note: currently, TANDA only works with TensorFlow 1.2. This is enforced in
+`python-package-requirement.txt`. We do not recommend using newer versions
+right now, as models will not train correctly.*
 
 ## Example usage
 
