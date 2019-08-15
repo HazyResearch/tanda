@@ -1,13 +1,11 @@
 # Learning to Compose Domain-Specific Transformations for Data Augmentation
 ### *Or: Transformation Adversarial Networks for Data Augmentations (TANDA)*
 
-#### Corresponding authors: [Alex Ratner](https://ajratner.github.io) (ajratner@cs.stanford.edu), [Henry Ehrenberg](https://github.com/henryre) (henryre@cs.stanford.edu)
+Paper (NeurIPS 2017): [Learning to Compose Domain-Specific Transformations for Data Augmentation](https://arxiv.org/abs/1709.01643)  
+Corresponding authors: [Alex Ratner](https://ajratner.github.io) (ajratner@cs.stanford.edu), [Henry Ehrenberg](https://github.com/henryre) (henryre@cs.stanford.edu)  
+TANDA [blog post](https://hazyresearch.github.io/snorkel/blog/tanda.html)  
 
-#### [TANDA blog post](https://hazyresearch.github.io/snorkel/blog/tanda.html)
-
-#### Paper (NeurIPS 2017): [Learning to Compose Domain-Specific Transformations for Data Augmentation](https://arxiv.org/abs/1709.01643) 
-
-#### Hazy Research: [GitHub](https://github.com/HazyResearch), [research homepage](http://snorkel.stanford.edu)
+*For more on using Transformation Functions (TFs) for data augmentation, see the [Snorkel project](http://snorkel.org)
 
 ## NEW: an easy-to-use Keras interface
 
