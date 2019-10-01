@@ -52,7 +52,9 @@ def create_run_log(logdir, flags, name='run_log.json'):
     """Creates and saves initial run log including all flags"""
     log_dict = defaultdict(list)
     # Make sure flags are parsed, then use as initial log dict
-    flags._parse_flags()
+    import sys
+    flags(sys.argv)
+    # flags._parse_flags()
     log_dict.update(flags.__flags)
     # Get the git commit hash
     log_dict['commit_hash'] = get_git_revision_short_hash()
