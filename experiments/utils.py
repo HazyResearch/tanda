@@ -58,7 +58,7 @@ def create_run_log(logdir, flags, name='run_log.json'):
     log_dict.update(flags.__flags)
     # Get the git commit hash
     log_dict['commit_hash'] = get_git_revision_short_hash()
-    save_run_log(log_dict, logdir, name=name)
+    # save_run_log(log_dict, logdir, name=name)
     return log_dict
 
 
